@@ -20,8 +20,8 @@ Examples are derived from official AEAT documentation and test environments.
 
 # Example Files
 
-examples/registro-alta.xml  
-examples/registro-alta-firmado.xml  
+../examples/registro-alta.xml  
+../examples/registro-alta-firmado.xml  
 
 ---
 
@@ -29,7 +29,7 @@ examples/registro-alta-firmado.xml
 
 File:
 
-examples/registro-alta.xml
+../examples/registro-alta.xml
 
 Operation:
 
