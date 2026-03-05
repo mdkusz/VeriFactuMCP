@@ -1,0 +1,196 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "spec/json/invoice-draft-ops.schema.json",
+  "title": "InvoiceDraftOps",
+  "type": "object",
+  "required": ["draftId", "ops"],
+  "properties": {
+    "draftId": { "$ref": "common-types.schema.json#/$defs/uuid" },
+    "ops": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/op" }
+    }
+  },
+  "$defs": {
+    "op": {
+      "type": "object",
+      "required": ["op"],
+      "properties": {
+        "op": {
+          "type": "string",
+          "enum": [
+            "set_issuer",
+            "unset_issuer",
+            "set_recipient",
+            "unset_recipient",
+
+            "add_line",
+            "update_line",
+            "remove_line",
+
+            "set_rectification",
+            "unset_rectification",
+
+            "set_sif_info",
+            "unset_sif_info",
+
+            "recalculate_totals",
+            "finalize"
+          ]
+        },
+        "data": { "type": ["object", "null"] }
+      },
+      "allOf": [
+        { "$ref": "#/$defs/op_set_issuer" },
+        { "$ref": "#/$defs/op_set_recipient" },
+        { "$ref": "#/$defs/op_add_line" },
+        { "$ref": "#/$defs/op_update_line" },
+        { "$ref": "#/$defs/op_remove_line" },
+        { "$ref": "#/$defs/op_set_rectification" },
+        { "$ref": "#/$defs/op_set_sif_info" },
+        { "$ref": "#/$defs/op_finalize" }
+      ],
+      "additionalProperties": false
+    },
+
+    "op_set_issuer": {
+      "if": { "properties": { "op": { "const": "set_issuer" } } },
+      "then": {
+        "required": ["data"],
+        "properties": {
+          "data": { "$ref": "common-types.schema.json#/$defs/party" }
+        }
+      }
+    },
+
+    "op_set_recipient": {
+      "if": { "properties": { "op": { "const": "set_recipient" } } },
+      "then": {
+        "required": ["data"],
+        "properties": {
+          "data": { "$ref": "common-types.schema.json#/$defs/party" }
+        }
+      }
+    },
+
+    "op_add_line": {
+      "if": { "properties": { "op": { "const": "add_line" } } },
+      "then": {
+        "required": ["data"],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": ["lineId", "description", "quantity", "unitPrice"],
+            "properties": {
+              "lineId": { "$ref": "common-types.schema.json#/$defs/uuid" },
+              "description": { "type": "string", "minLength": 1 },
+              "quantity": { "type": "number" },
+              "unitPrice": { "type": "number" },
+              "taxRate": { "$ref": "common-types.schema.json#/$defs/percent" }
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+
+    "op_update_line": {
+      "if": { "properties": { "op": { "const": "update_line" } } },
+      "then": {
+        "required": ["data"],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": ["lineId", "patch"],
+            "properties": {
+              "lineId": { "$ref": "common-types.schema.json#/$defs/uuid" },
+              "patch": {
+                "type": "object",
+                "properties": {
+                  "description": { "type": "string", "minLength": 1 },
+                  "quantity": { "type": "number" },
+                  "unitPrice": { "type": "number" },
+                  "taxRate": { "$ref": "common-types.schema.json#/$defs/percent" }
+                },
+                "minProperties": 1,
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+
+    "op_remove_line": {
+      "if": { "properties": { "op": { "const": "remove_line" } } },
+      "then": {
+        "required": ["data"],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": ["lineId"],
+            "properties": {
+              "lineId": { "$ref": "common-types.schema.json#/$defs/uuid" }
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+
+    "op_set_rectification": {
+      "if": { "properties": { "op": { "const": "set_rectification" } } },
+      "then": {
+        "required": ["data"],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": ["rectifiesSnapshotId", "reason"],
+            "properties": {
+              "rectifiesSnapshotId": { "$ref": "common-types.schema.json#/$defs/uuid" },
+              "reason": { "type": "string", "minLength": 1 }
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+
+    "op_set_sif_info": {
+      "if": { "properties": { "op": { "const": "set_sif_info" } } },
+      "then": {
+        "required": ["data"],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": ["systemId", "systemVersion"],
+            "properties": {
+              "systemId": { "type": "string", "minLength": 1 },
+              "systemVersion": { "type": "string", "minLength": 1 },
+              "installationNumber": { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+
+    "op_finalize": {
+      "if": { "properties": { "op": { "const": "finalize" } } },
+      "then": {
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "validateOnly": { "type": "boolean", "default": false }
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}
