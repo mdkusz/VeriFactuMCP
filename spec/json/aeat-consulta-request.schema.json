@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "spec/json/aeat-consulta-request.schema.json",
+  "title": "AeatConsultaRequest",
+  "type": "object",
+  "required": ["issuerTaxId"],
+  "properties": {
+    "issuerTaxId": { "$ref": "common-types.schema.json#/$defs/taxId" },
+
+    "series": { "type": "string" },
+    "number": { "type": "string" },
+
+    "issueDateFrom": { "$ref": "common-types.schema.json#/$defs/date" },
+    "issueDateTo": { "$ref": "common-types.schema.json#/$defs/date" },
+
+    "recipientTaxId": { "$ref": "common-types.schema.json#/$defs/taxId" },
+
+    "page": { "type": "integer", "minimum": 1, "default": 1 },
+    "pageSize": { "type": "integer", "minimum": 1, "maximum": 500, "default": 50 },
+
+    "includeSnapshots": {
+      "type": "boolean",
+      "default": true,
+      "description": "If true, response includes InvoiceSnapshot items rehidratable by the client."
+    }
+  },
+  "additionalProperties": false
+}
