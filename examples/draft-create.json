@@ -1,0 +1,8 @@
+{
+  "mode": "verifactu",
+  "issueDate": "2026-03-05",
+  "series": "A",
+  "currency": "EUR",
+  "clientRef": "demo-article-001",
+  "notes": "Incremental build example for the article."
+}
