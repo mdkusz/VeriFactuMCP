@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "spec/json/aeat-consulta-response.schema.json",
+  "title": "AeatConsultaResponse",
+  "type": "object",
+  "required": ["items", "page", "pageSize"],
+  "properties": {
+    "page": { "type": "integer", "minimum": 1 },
+    "pageSize": { "type": "integer", "minimum": 1 },
+    "totalItems": { "type": ["integer", "null"], "minimum": 0 },
+
+    "items": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/item" }
+    },
+
+    "errors": {
+      "type": "array",
+      "items": { "$ref": "common-types.schema.json#/$defs/error" }
+    }
+  },
+  "$defs": {
+    "item": {
+      "type": "object",
+      "required": ["aeatStatus"],
+      "properties": {
+        "aeatStatus": {
+          "type": "string",
+          "enum": ["Unknown", "Submitted", "Accepted", "Rejected"]
+        },
+        "aeatMeta": {
+          "type": ["object", "null"],
+          "properties": {
+            "csv": { "type": "string" },
+            "submittedAt": { "$ref": "common-types.schema.json#/$defs/dateTime" },
+            "acceptedAt": { "$ref": "common-types.schema.json#/$defs/dateTime" },
+            "rejectedAt": { "$ref": "common-types.schema.json#/$defs/dateTime" }
+          },
+          "additionalProperties": false
+        },
+        "snapshot": {
+          "$ref": "invoice-snapshot.schema.json",
+          "description": "If includeSnapshots=true, server returns a full snapshot the client can use to rectify."
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
