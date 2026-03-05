@@ -1,0 +1,70 @@
+{
+  "draftId": "d_98374",
+  "ops": [
+    {
+      "op": "set_sif_info",
+      "data": {
+        "systemId": "VeriFactuMCP",
+        "systemVersion": "0.1.0",
+        "installationNumber": "DEV-LOCAL"
+      }
+    },
+    {
+      "op": "set_issuer",
+      "data": {
+        "taxId": "B12345678",
+        "name": "ACME SL",
+        "address": "Calle Falsa 123",
+        "postalCode": "08001",
+        "city": "Barcelona",
+        "province": "Barcelona",
+        "countryCode": "ES"
+      }
+    },
+    {
+      "op": "set_recipient",
+      "data": {
+        "taxId": "12345678Z",
+        "name": "Cliente Demo",
+        "address": "Avenida Ejemplo 10",
+        "postalCode": "28001",
+        "city": "Madrid",
+        "province": "Madrid",
+        "countryCode": "ES"
+      }
+    },
+    {
+      "op": "add_line",
+      "data": {
+        "lineId": "l1",
+        "description": "Servicio de consultoría",
+        "quantity": 1,
+        "unitPrice": 100.0,
+        "taxRate": 21
+      }
+    },
+    {
+      "op": "add_line",
+      "data": {
+        "lineId": "l2",
+        "description": "Soporte técnico",
+        "quantity": 2,
+        "unitPrice": 50.0,
+        "taxRate": 21
+      }
+    },
+    {
+      "op": "update_line",
+      "data": {
+        "lineId": "l2",
+        "patch": {
+          "description": "Soporte técnico (2 horas)"
+        }
+      }
+    },
+    {
+      "op": "recalculate_totals",
+      "data": null
+    }
+  ]
+}
