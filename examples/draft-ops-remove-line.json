@@ -1,0 +1,21 @@
+{
+  "draftId": "d_98374",
+  "ops": [
+    {
+      "op": "remove_line",
+      "data": {
+        "lineId": "l2"
+      }
+    },
+    {
+      "op": "recalculate_totals",
+      "data": null
+    },
+    {
+      "op": "finalize",
+      "data": {
+        "validateOnly": true
+      }
+    }
+  ]
+}
