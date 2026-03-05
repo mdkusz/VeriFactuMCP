@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "spec/json/common-types.schema.json",
+  "title": "CommonTypes",
+  "type": "object",
+  "$defs": {
+    "uuid": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Opaque identifier (UUID recommended)."
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "dateTime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "money": {
+      "type": "number",
+      "description": "Monetary amount. Use decimal in implementation; JSON uses number.",
+      "minimum": 0
+    },
+    "percent": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "taxId": {
+      "type": "string",
+      "minLength": 3,
+      "description": "Tax identifier (e.g., NIF/NIE/CIF). Validation is implementation-specific."
+    },
+    "party": {
+      "type": "object",
+      "required": ["taxId", "name"],
+      "properties": {
+        "taxId": { "$ref": "#/$defs/taxId" },
+        "name": { "type": "string", "minLength": 1 },
+        "address": { "type": "string" },
+        "postalCode": { "type": "string" },
+        "city": { "type": "string" },
+        "province": { "type": "string" },
+        "countryCode": { "type": "string", "minLength": 2, "maxLength": 2 }
+      },
+      "additionalProperties": false
+    },
+    "error": {
+      "type": "object",
+      "required": ["code", "message"],
+      "properties": {
+        "code": { "type": "string", "minLength": 1 },
+        "message": { "type": "string", "minLength": 1 },
+        "details": { "type": "object" }
+      },
+      "additionalProperties": false
+    }
+  }
+}
